@@ -5,15 +5,20 @@
     <script src="javascripts/vendor/react/react.js"></script>
     <script src="javascripts/vendor/react/JSXTransformer.js"></script>
     <script src="javascripts/vendor/jquery/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+
   </head>
   <body>
     <div id="content"></div>
     <script type="text/jsx">
-      var CommentBox = React.createClass({render:function(){
+      var CommentBox = React.createClass({
+      	render:function(){
       	return (<div className="CommentBox"><h2>Comments</h2><CommentList /><CommentForm /></div>);
       }});
-      var CommentList = React.createClass({render:function(){
-      	return (<div className="CommentList">Hello Im a CommentList</div>);
+      var CommentList = React.createClass({
+      	render:function(){
+      		/**passing author field as attribute*/
+      	return (<div className="CommentList"><Comment author="Rahul">This is a comment</Comment><Comment author="Jordan Walke">This is *another* comment</Comment></div>);
       }});
 	var CommentForm = React.createClass({
 	  render: function() {
@@ -24,6 +29,21 @@
 	    );
 	  }
 	});
+	var Comment = React.createClass({
+  render: function() {
+  	 /*this.proprs.childrenOUtputs the content given as node text in comment list*/
+  	  /*this.props.children.toString() Outputs the content alongwith p tag*/
+    return (
+      <div className="comment">
+        <h2 className="commentAuthor">
+          {this.props.author}
+        </h2>
+        {this.props.children}
+        {marked(this.props.children.toString())}
+      </div>
+    );
+  }
+});
       React.render(<CommentBox />,document.getElementById('content'));
     </script>
   </body>
