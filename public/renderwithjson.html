@@ -1,0 +1,54 @@
+<!-- index.html -->
+<html>
+  <head>
+    <title>Hello React</title>
+    <script src="javascripts/vendor/react/react.js"></script>
+    <script src="javascripts/vendor/react/JSXTransformer.js"></script>
+    <script src="javascripts/vendor/jquery/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="text/jsx">
+    var commentsFromServerVar = [{author: "Pete Hunt", text: "This is one comment"},{author: "Jordan Walke", text: "This is *another* comment"}];
+      var CommentBox = React.createClass({
+      	render:function(){
+      	return (<div className="CommentBox"><h2>Comments</h2><CommentList commentsListFromServerAttr="{this.props.commentsFromServerAttr}" /><CommentForm /></div>);
+      }});
+      var CommentList = React.createClass({
+      	render:function(){
+      		/*Access commentslist attribute*/
+          var commentsListPop=this.props.commentsListFromServerAttr.map(function(comment){
+            return (<Comment author="comment.author">{comment.text}</Comment>);
+
+          });
+      	return (<div className="CommentList">{commentsListPop}</div>);
+      }});
+	var CommentForm = React.createClass({
+	  render: function() {
+	    return (
+	      <div className="commentForm">
+	        Hello, world! I am a CommentForm.
+	      </div>
+	    );
+	  }
+	});
+	var Comment = React.createClass({
+  render: function() {
+  	 /**Save the marked function output to a string and later inject into a react library function for rendering as html*/
+     var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+    return (
+      <div className="comment">
+        <h2 className="commentAuthor">
+          {this.props.author}
+        </h2>
+        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+      </div>
+    );
+  }
+});
+      React.render(<CommentBox commentsFromServerAttr="{commentsFromServerVar}">,document.getElementById('content'));
+    </script>
+  </body>
+</html>
